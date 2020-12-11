@@ -12,6 +12,7 @@ import ngransac
 from network import CNNet
 from dataset import SparseDataset
 import util
+from compare import find_ground_truth
 
 parser = util.create_parser('NG-RANSAC demo for a user defined image pair. Fits an essential matrix (default) or fundamental matrix (-fmat) using OpenCV RANSAC vs. NG-RANSAC.')
 
@@ -38,6 +39,9 @@ parser.add_argument('--hyps', '-hyps', type=int, default=1000,
 
 parser.add_argument('--refine', '-ref', action='store_true', 
 	help='refine using the 8point algorithm on all inliers, only used for fundamental matrix estimation (-fmat)')
+
+parser.add_argument("--name", required=True)
+parser.add_argument("--im2", required=True)
 
 opt = parser.parse_args()
 
@@ -77,16 +81,23 @@ model = model.cuda()
 model.eval()
 print("Successfully loaded model.")
 
+if opt.name == "boat":
+    ext = "pgm"
+else:
+    ext = "ppm"
+path1 = "GT_pics/"+opt.name+"/imgs/img1."+ext
+path2 = "GT_pics/"+opt.name+"/imgs/img"+opt.im2+"."+ext
 print("\nProcessing pair:")
-print("Image 1: ", opt.image1)
-print("Image 2: ", opt.image2)
-
+print("Image 1: ", path1)
+print("Image 2: ", path2)
+gt_path = "ground_truth/"+opt.name+"/"+opt.name+"_1_"+opt.im2+"_TP.txt"
+print("GT file: ", gt_path)
 # read images
-img1 = cv2.imread(opt.image1)
-img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+img1_rgb = cv2.imread(path1)
+img1 = cv2.cvtColor(img1_rgb, cv2.COLOR_BGR2GRAY)
 
-img2 = cv2.imread(opt.image2)
-img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+img2_rgb = cv2.imread(path2)
+img2 = cv2.cvtColor(img2_rgb, cv2.COLOR_BGR2GRAY)
 
 # calibration matrices of image 1 and 2, principal point assumed to be at the center
 K1 = np.eye(3)
@@ -219,8 +230,112 @@ print("\nNG-RANSAC Inliers: ", int(incount))
 out_inliers = out_inliers.byte().numpy().ravel().tolist()
 ransac_inliers = ransac_inliers.ravel().tolist()
 
-match_img_ransac = cv2.drawMatches(img1, kp1, img2, kp2, good_matches, None, flags=2, matchColor=(75,180,60), matchesMask = ransac_inliers)
-match_img_ngransac = cv2.drawMatches(img1, kp1, img2, kp2, good_matches, None, flags=2, matchColor=(200,130,0), matchesMask = out_inliers)
+def show_matches(img1, img2, k1, k2, out1, out2, target_dim=800.):
+    h1, w1 = img1.shape[:2]
+    h2, w2 = img2.shape[:2]
+
+    def resize_horizontal(h1, w1, h2, w2, target_height):
+        scale_to_align = float(h1) / h2
+        current_width = w1 + w2 * scale_to_align
+        scale_to_fit = target_height / h1
+        target_w1 = int(w1 * scale_to_fit)
+        target_w2 = int(w2 * scale_to_align * scale_to_fit)
+        target_h = int(target_height)
+        return (target_w1, target_h), (target_w2, target_h), scale_to_fit, scale_to_fit * scale_to_align, [target_w1, 0]
+
+    def resize_vertical(h1, w1, h2, w2, target_width):
+        scale_to_align = float(w1) / w2
+        current_height = h1 + h2 * scale_to_align
+        scale_to_fit = target_width / w1
+        target_h1 = int(h1 * scale_to_fit)
+        target_h2 = int(h2 * scale_to_align * scale_to_fit)
+        target_w = int(target_width)
+        return (target_w, target_h1), (target_w, target_h2), scale_to_fit, scale_to_fit * scale_to_align, [0, target_h1]
+
+    target_1, target_2, scale1, scale2, offset = resize_vertical(h1, w1, h2, w2, target_dim)
+
+    im1 = cv2.resize(img1_rgb, target_1, interpolation=cv2.INTER_AREA)
+    im2 = cv2.resize(img2_rgb, target_2, interpolation=cv2.INTER_AREA)
+
+    h1, w1 = target_1[::-1]
+    h2, w2 = target_2[::-1]
+
+    # vis = np.ones((max(h1, h2), w1 + w2, 3), np.uint8) * 255
+    vis = np.ones((h1+h2, max(w1, w2), 3), np.uint8) * 255
+    vis[:h1, :w1] = im1
+    vis[h1:h1+h2, :w2] = im2
+
+    p1 = [np.int32(k * scale1) for k in k1]
+    p2 = [np.int32(k * scale2 + offset) for k in k2]
+    o1 = [np.int32(out * scale1) for out in out1]
+    o2 = [np.int32(out * scale2 + offset) for out in out2]
+
+    # count = 0
+    for (x1, y1), (x2, y2) in zip(p1, p2):
+        cv2.line(vis, (x1, y1), (x2, y2), [0, 255, 0], 1)
+        # count += 1
+        # if count > 500:
+        #     break
+    
+    # count = 0
+    for (x1, y1), (x2, y2) in zip(o1, o2):
+        cv2.line(vis, (x1, y1), (x2, y2), [0, 0, 255], 1)
+    #     count += 1
+    #     if count > 300:
+    #         break
+
+    cv2.imshow("AdaLAM example", vis)
+    cv2.waitKey()
+
+kng1 = []
+kng2 = []
+indng = []
+krs1 = []
+krs2 = []
+indrs = []
+print(len(out_inliers))
+# print(good_matches[100].trainIdx)
+for i in range(len(out_inliers)):
+	if out_inliers[i] == 1:
+		print(good_matches[i].queryIdx, good_matches[i].trainIdx)
+		i1 = good_matches[i].queryIdx
+		i2 = good_matches[i].trainIdx
+		kng1.append(kp1[i1].pt)
+		kng2.append(kp2[i2].pt)
+		indng.append(i)
+	if ransac_inliers[i] == 1:
+		i1 = good_matches[i].queryIdx
+		i2 = good_matches[i].trainIdx
+		krs1.append(kp1[i1].pt)
+		krs2.append(kp2[i2].pt)
+		indrs.append(i)
+
+
+# # print("good_matches\n", good_matches)
+kng1 = np.array(kng1)
+kng2 = np.array(kng2)
+indng = np.array(indng)
+krs1 = np.array(krs1)
+krs2 = np.array(krs2)
+print("kng1\n", kng1)
+print("ngransac kng1 shape:",kng1.shape)
+true_pos, false_pos = find_ground_truth(kng1, kng2, gt_path)
+# pts1 = kng1[true_pos]
+# pts2 = kng2[true_pos]
+# out1 = kng1[false_pos]
+# out2 = kng2[false_pos]
+
+# f = open("NEW_RESULTS.txt", "a")
+#     f.write(path + "\n")
+#     f.write(str(len(true_pos)) + " true positive out of " + str(len(a1)) + "\n")
+#     f.write(str(len(false_pos)) + " false positive out of " + str(len(a1)) + "\n")
+#     f.write("\n \n")
+
+# show_matches(img1, img2, pts1, pts2, out1, out2)
+
+
+match_img_ransac = cv2.drawMatches(img1_rgb, kp1, img2_rgb, kp2, good_matches, None, flags=2, matchColor=(75,180,60), matchesMask = ransac_inliers)
+match_img_ngransac = cv2.drawMatches(img1_rgb, kp1, img2_rgb, kp2, good_matches, None, flags=2, matchColor=(200,130,0), matchesMask = out_inliers)
 match_img = np.concatenate((match_img_ransac, match_img_ngransac), axis = 0)
 
 cv2.imwrite(opt.outimg, match_img)
