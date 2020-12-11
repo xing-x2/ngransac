@@ -54,7 +54,7 @@ else:
 if opt.orb:
 	print("Using ORB.\n")
 	if opt.nfeatures > 0:
-		detector = cv2.ORB_create(nfeatures=opt.nfeatures)
+		detector = cv2.ORB_create(nfeatures=8000)
 	else:
 		detector = cv2.ORB_create()
 else:
@@ -63,9 +63,9 @@ else:
 	else:
 		print("Using SIFT.\n")
 	if opt.nfeatures > 0:
-		detector = cv2.xfeatures2d.SIFT_create(nfeatures=opt.nfeatures, contrastThreshold=1e-5)
+		detector = cv2.xfeatures2d.SIFT_create(nfeatures=8000, contrastThreshold=1e-5)
 	else:
-		detector = cv2.xfeatures2d.SIFT_create()
+		detector = cv2.xfeatures2d.SIFT_create(nfeatures=8000, contrastThreshold=1e-5)
 
 # loading neural guidence network
 model_file = opt.model
@@ -287,39 +287,46 @@ def show_matches(img1, img2, k1, k2, out1, out2, target_dim=800.):
     cv2.imshow("AdaLAM example", vis)
     cv2.waitKey()
 
-kng1 = []
-kng2 = []
-indng = []
-krs1 = []
-krs2 = []
-indrs = []
-print(len(out_inliers))
-# print(good_matches[100].trainIdx)
+km1 = []
+km2 = []
+# print(len(out_inliers))
+for match in good_matches:
+	i1 = match.queryIdx
+	i2 = match.trainIdx
+	km1.append(kp1[i1].pt)
+	km2.append(kp2[i2].pt)
+km1 = np.array(km1)
+km2 = np.array(km2)
+# print(km1.shape, km2.shape)
+
+ng_in = []
 for i in range(len(out_inliers)):
 	if out_inliers[i] == 1:
-		print(good_matches[i].queryIdx, good_matches[i].trainIdx)
-		i1 = good_matches[i].queryIdx
-		i2 = good_matches[i].trainIdx
-		kng1.append(kp1[i1].pt)
-		kng2.append(kp2[i2].pt)
-		indng.append(i)
+		ng_in.append(i)
+
+kng1 = km1[ng_in]
+kng2 = km2[ng_in]
+
+rs_in = []
+for i in range(len(ransac_inliers)):
 	if ransac_inliers[i] == 1:
-		i1 = good_matches[i].queryIdx
-		i2 = good_matches[i].trainIdx
-		krs1.append(kp1[i1].pt)
-		krs2.append(kp2[i2].pt)
-		indrs.append(i)
+		rs_in.append(i)
+
+krs1 = km1[rs_in]
+krs2 = km2[rs_in]
 
 
 # # print("good_matches\n", good_matches)
-kng1 = np.array(kng1)
-kng2 = np.array(kng2)
-indng = np.array(indng)
-krs1 = np.array(krs1)
-krs2 = np.array(krs2)
-print("kng1\n", kng1)
-print("ngransac kng1 shape:",kng1.shape)
-true_pos, false_pos = find_ground_truth(kng1, kng2, gt_path)
+# kng1 = np.array(kng1)
+# kng2 = np.array(kng2)
+# indng = np.array(indng)
+# krs1 = np.array(krs1)
+# krs2 = np.array(krs2)
+# print("kng2\n", kng2)
+print("\nngransac:")
+true_pos, false_pos = find_ground_truth(kng1, kng2, gt_path, "NGRANSAC")
+print("\nransac:")
+true_pos, false_pos = find_ground_truth(krs1, krs2, gt_path, "RANSAC")
 # pts1 = kng1[true_pos]
 # pts2 = kng2[true_pos]
 # out1 = kng1[false_pos]

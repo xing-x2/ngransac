@@ -1,0 +1,300 @@
+NGRANSAC ground_truth/bark/bark_1_2_TP.txt
+1568 true positive out of 1606
+38 false positive out of 1606
+
+ 
+RANSAC ground_truth/bark/bark_1_2_TP.txt
+1478 true positive out of 1515
+37 false positive out of 1515
+
+ 
+NGRANSAC ground_truth/bark/bark_1_3_TP.txt
+1038 true positive out of 1105
+67 false positive out of 1105
+
+ 
+RANSAC ground_truth/bark/bark_1_3_TP.txt
+790 true positive out of 838
+48 false positive out of 838
+
+ 
+NGRANSAC ground_truth/bark/bark_1_4_TP.txt
+979 true positive out of 1076
+97 false positive out of 1076
+
+ 
+RANSAC ground_truth/bark/bark_1_4_TP.txt
+836 true positive out of 916
+80 false positive out of 916
+
+ 
+NGRANSAC ground_truth/bark/bark_1_5_TP.txt
+613 true positive out of 719
+106 false positive out of 719
+
+ 
+RANSAC ground_truth/bark/bark_1_5_TP.txt
+615 true positive out of 702
+87 false positive out of 702
+
+ 
+NGRANSAC ground_truth/bark/bark_1_6_TP.txt
+256 true positive out of 407
+151 false positive out of 407
+
+ 
+RANSAC ground_truth/bark/bark_1_6_TP.txt
+139 true positive out of 223
+84 false positive out of 223
+
+ 
+NGRANSAC ground_truth/boat/boat_1_2_TP.txt
+2644 true positive out of 2681
+37 false positive out of 2681
+
+ 
+RANSAC ground_truth/boat/boat_1_2_TP.txt
+2578 true positive out of 2635
+57 false positive out of 2635
+
+ 
+NGRANSAC ground_truth/boat/boat_1_3_TP.txt
+1977 true positive out of 2023
+46 false positive out of 2023
+
+ 
+RANSAC ground_truth/boat/boat_1_3_TP.txt
+1945 true positive out of 1991
+46 false positive out of 1991
+
+ 
+NGRANSAC ground_truth/boat/boat_1_4_TP.txt
+711 true positive out of 764
+53 false positive out of 764
+
+ 
+RANSAC ground_truth/boat/boat_1_4_TP.txt
+640 true positive out of 686
+46 false positive out of 686
+
+ 
+NGRANSAC ground_truth/boat/boat_1_5_TP.txt
+491 true positive out of 547
+56 false positive out of 547
+
+ 
+RANSAC ground_truth/boat/boat_1_5_TP.txt
+306 true positive out of 350
+44 false positive out of 350
+
+ 
+NGRANSAC ground_truth/boat/boat_1_6_TP.txt
+152 true positive out of 291
+139 false positive out of 291
+
+ 
+RANSAC ground_truth/boat/boat_1_6_TP.txt
+9 true positive out of 82
+73 false positive out of 82
+
+ 
+NGRANSAC ground_truth/graffiti/graffiti_1_2_TP.txt
+1564 true positive out of 1617
+53 false positive out of 1617
+
+ 
+RANSAC ground_truth/graffiti/graffiti_1_2_TP.txt
+1451 true positive out of 1491
+40 false positive out of 1491
+
+ 
+NGRANSAC ground_truth/graffiti/graffiti_1_3_TP.txt
+904 true positive out of 936
+32 false positive out of 936
+
+ 
+RANSAC ground_truth/graffiti/graffiti_1_3_TP.txt
+478 true positive out of 508
+30 false positive out of 508
+
+ 
+NGRANSAC ground_truth/graffiti/graffiti_1_4_TP.txt
+199 true positive out of 252
+53 false positive out of 252
+
+ 
+RANSAC ground_truth/graffiti/graffiti_1_4_TP.txt
+27 true positive out of 62
+35 false positive out of 62
+
+ 
+NGRANSAC ground_truth/graffiti/graffiti_1_5_TP.txt
+0 true positive out of 43
+43 false positive out of 43
+
+ 
+RANSAC ground_truth/graffiti/graffiti_1_5_TP.txt
+1 true positive out of 50
+49 false positive out of 50
+
+ 
+NGRANSAC ground_truth/graffiti/graffiti_1_6_TP.txt
+0 true positive out of 57
+57 false positive out of 57
+
+ 
+RANSAC ground_truth/graffiti/graffiti_1_6_TP.txt
+0 true positive out of 48
+48 false positive out of 48
+
+ 
+NGRANSAC ground_truth/JPEG/JPEG_1_2_TP.txt
+3791 true positive out of 3927
+136 false positive out of 3927
+
+ 
+RANSAC ground_truth/JPEG/JPEG_1_2_TP.txt
+3784 true positive out of 3848
+64 false positive out of 3848
+
+ 
+NGRANSAC ground_truth/JPEG/JPEG_1_3_TP.txt
+2902 true positive out of 3091
+189 false positive out of 3091
+
+ 
+RANSAC ground_truth/JPEG/JPEG_1_3_TP.txt
+2830 true positive out of 3025
+195 false positive out of 3025
+
+ 
+NGRANSAC ground_truth/JPEG/JPEG_1_4_TP.txt
+1984 true positive out of 2216
+232 false positive out of 2216
+
+ 
+RANSAC ground_truth/JPEG/JPEG_1_4_TP.txt
+1978 true positive out of 2130
+152 false positive out of 2130
+
+ 
+NGRANSAC ground_truth/JPEG/JPEG_1_5_TP.txt
+875 true positive out of 1091
+216 false positive out of 1091
+
+ 
+RANSAC ground_truth/JPEG/JPEG_1_5_TP.txt
+889 true positive out of 1010
+121 false positive out of 1010
+
+ 
+NGRANSAC ground_truth/JPEG/JPEG_1_6_TP.txt
+322 true positive out of 529
+207 false positive out of 529
+
+ 
+RANSAC ground_truth/JPEG/JPEG_1_6_TP.txt
+340 true positive out of 481
+141 false positive out of 481
+
+ 
+NGRANSAC ground_truth/light/light_1_2_TP.txt
+2681 true positive out of 2826
+145 false positive out of 2826
+
+ 
+RANSAC ground_truth/light/light_1_2_TP.txt
+2679 true positive out of 2805
+126 false positive out of 2805
+
+ 
+NGRANSAC ground_truth/light/light_1_3_TP.txt
+2468 true positive out of 2592
+124 false positive out of 2592
+
+ 
+RANSAC ground_truth/light/light_1_3_TP.txt
+2455 true positive out of 2572
+117 false positive out of 2572
+
+ 
+NGRANSAC ground_truth/light/light_1_4_TP.txt
+2112 true positive out of 2339
+227 false positive out of 2339
+
+ 
+RANSAC ground_truth/light/light_1_4_TP.txt
+2107 true positive out of 2320
+213 false positive out of 2320
+
+ 
+NGRANSAC ground_truth/light/light_1_5_TP.txt
+1684 true positive out of 2136
+452 false positive out of 2136
+
+ 
+RANSAC ground_truth/light/light_1_5_TP.txt
+1666 true positive out of 2110
+444 false positive out of 2110
+
+ 
+NGRANSAC ground_truth/light/light_1_6_TP.txt
+849 true positive out of 1812
+963 false positive out of 1812
+
+ 
+RANSAC ground_truth/light/light_1_6_TP.txt
+831 true positive out of 1760
+929 false positive out of 1760
+
+ 
+NGRANSAC ground_truth/wall/wall_1_2_TP.txt
+4350 true positive out of 4369
+19 false positive out of 4369
+
+ 
+RANSAC ground_truth/wall/wall_1_2_TP.txt
+4346 true positive out of 4357
+11 false positive out of 4357
+
+ 
+NGRANSAC ground_truth/wall/wall_1_3_TP.txt
+3670 true positive out of 3688
+18 false positive out of 3688
+
+ 
+RANSAC ground_truth/wall/wall_1_3_TP.txt
+3659 true positive out of 3674
+15 false positive out of 3674
+
+ 
+NGRANSAC ground_truth/wall/wall_1_4_TP.txt
+2500 true positive out of 2519
+19 false positive out of 2519
+
+ 
+RANSAC ground_truth/wall/wall_1_4_TP.txt
+1863 true positive out of 1885
+22 false positive out of 1885
+
+ 
+NGRANSAC ground_truth/wall/wall_1_5_TP.txt
+1131 true positive out of 1157
+26 false positive out of 1157
+
+ 
+RANSAC ground_truth/wall/wall_1_5_TP.txt
+740 true positive out of 766
+26 false positive out of 766
+
+ 
+NGRANSAC ground_truth/wall/wall_1_6_TP.txt
+83 true positive out of 112
+29 false positive out of 112
+
+ 
+RANSAC ground_truth/wall/wall_1_6_TP.txt
+1 true positive out of 61
+60 false positive out of 61
+
+ 
